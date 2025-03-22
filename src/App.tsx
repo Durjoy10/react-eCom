@@ -1,44 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { supabase } from './lib/supabase';
-import { useAuthStore } from './store/authStore';
 import { Navbar } from './components/Navbar';
-import { Home } from './pages/Home';
-import { ProductDetail } from './pages/ProductDetail';
-import { Profile } from './pages/Profile';
-import { Login } from './pages/Login';
+import { RootLoader } from './components/RootLoader';
+import { Loader } from './components/Loader';
+
+// Lazy load pages
+const Home = lazy(() => import('./pages/Home'));
+const Products = lazy(() => import('./pages/Products'));
+const ProductDetail = lazy(() => import('./pages/ProductDetail'));
+const CategoryProducts = lazy(() => import('./pages/CategoryProducts'));
+const TrackOrder = lazy(() => import('./pages/TrackOrder'));
+const Wishlist = lazy(() => import('./pages/Wishlist'));
+const Login = lazy(() => import('./pages/Login'));
 
 function App() {
-  const { setUser } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setUser(session.user);
-      }
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
+    // Simulate initial app loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
   }, []);
+
+  if (isLoading) {
+    return <RootLoader />;
+  }
 
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
+        <Suspense fallback={
+          <div className="flex justify-center items-center min-h-[calc(100vh-64px)]">
+            <Loader size="large" />
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/category/:id" element={<CategoryProducts />} />
+            <Route path="/track-order" element={<TrackOrder />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </Suspense>
       </div>
     </BrowserRouter>
   );

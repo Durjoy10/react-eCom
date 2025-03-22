@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { supabase } from '../lib/supabase';
+import { mockProducts } from '../data/mockProducts';
 
 interface Product {
   id: string;
@@ -14,6 +14,7 @@ interface Product {
 interface ProductState {
   products: Product[];
   loading: boolean;
+  error: string | null;
   fetchProducts: () => Promise<void>;
   getProductsByCategory: (category: string) => Product[];
   getProductsByTag: (tag: string) => Product[];
@@ -22,16 +23,19 @@ interface ProductState {
 export const useProductStore = create<ProductState>((set, get) => ({
   products: [],
   loading: false,
+  error: null,
   fetchProducts: async () => {
-    set({ loading: true });
-    const { data, error } = await supabase
-      .from('products')
-      .select('*');
-    
-    if (!error && data) {
-      set({ products: data });
+    set({ loading: true, error: null });
+    try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      set({ products: mockProducts });
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      set({ error: error instanceof Error ? error.message : 'Failed to fetch products' });
+    } finally {
+      set({ loading: false });
     }
-    set({ loading: false });
   },
   getProductsByCategory: (category) => {
     return get().products.filter(product => product.category === category);

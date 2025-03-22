@@ -1,20 +1,36 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, User, Search } from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
+import { ShoppingBag, Search, User, Heart, Package } from 'lucide-react';
 
 export const Navbar = () => {
-  const { user, signOut } = useAuthStore();
-
   return (
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          <Link to="/" className="flex items-center">
-            <ShoppingBag className="h-8 w-8 text-indigo-600" />
-            <span className="ml-2 text-xl font-bold">ShopHub</span>
-          </Link>
+          {/* Left section - Logo and Navigation */}
+          <div className="flex items-center space-x-8">
+            <Link to="/" className="flex items-center">
+              <ShoppingBag className="h-8 w-8 text-indigo-600" />
+              <span className="ml-2 text-xl font-bold">ShopHub</span>
+            </Link>
+            
+            <div className="hidden md:flex space-x-6">
+              <Link to="/" className="text-gray-700 hover:text-indigo-600 font-medium">
+                Home
+              </Link>
+              <Link to="/products" className="text-gray-700 hover:text-indigo-600 font-medium">
+                Products
+              </Link>
+              <Link to="/track-order" className="text-gray-700 hover:text-indigo-600 font-medium">
+                Track Order
+              </Link>
+              <Link to="/wishlist" className="text-gray-700 hover:text-indigo-600 font-medium">
+                Wishlist
+              </Link>
+            </div>
+          </div>
 
+          {/* Middle section - Search */}
           <div className="flex-1 max-w-lg mx-8">
             <div className="relative">
               <input
@@ -26,27 +42,18 @@ export const Navbar = () => {
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
-            {user ? (
-              <>
-                <Link to="/profile" className="text-gray-700 hover:text-indigo-600">
-                  <User className="h-6 w-6" />
-                </Link>
-                <button
-                  onClick={() => signOut()}
-                  className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className="text-sm font-medium text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700"
-              >
-                Sign In
-              </Link>
-            )}
+          {/* Right section - Auth */}
+          <div className="flex items-center space-x-6">
+            <Link to="/wishlist" className="text-gray-700 hover:text-indigo-600">
+              <Heart className="h-6 w-6" />
+            </Link>
+            <Link to="/track-order" className="text-gray-700 hover:text-indigo-600">
+              <Package className="h-6 w-6" />
+            </Link>
+            <Link to="/login" className="flex items-center space-x-1 text-gray-700 hover:text-indigo-600">
+              <User className="h-6 w-6" />
+              <span className="hidden md:inline font-medium">Login</span>
+            </Link>
           </div>
         </div>
       </div>
