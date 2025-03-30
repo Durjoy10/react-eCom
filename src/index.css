@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Swiper global styles */
+.swiper-pagination-bullet {
+    @apply bg-white opacity-70 w-3 h-3;
+  }
+
+
+  /* styles/globals.css */
+.swiper-button-next,
+.swiper-button-prev {
+  @apply bg-transparent w-24 h-24 bg-black rounded-full;
+  background-image: none !important;
+
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  @apply text-2xl font-bold;
+  background: linear-gradient(45deg, #3B82F6, #EC4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+}
+
+.swiper-button-next:hover:after,
+.swiper-button-prev:hover:after {
+
+  /* background: linear-gradient(45deg, #2563EB, #DB2777); */
+}
+
+/* Mobile hiding remains */
+@media (max-width: 768px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    @apply hidden;
+  }
+}
+
