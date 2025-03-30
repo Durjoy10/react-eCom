@@ -6,6 +6,7 @@ import { categories } from '../data/categories';
 import { mockProducts } from '../data/mockProducts';
 import { ArrowRight } from 'lucide-react';
 import { Loader } from '../components/Loader';
+import Showcase1 from '../components/Showcase/Showcase1';
 
 const ProductSection = ({ title, products, linkText, linkTo }: {
   title: string;
@@ -74,6 +75,8 @@ export const Home = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <Showcase1 />
+      
       {/* Categories Section */}
       <div className="mb-16">
         <div className="flex justify-between items-center mb-8">

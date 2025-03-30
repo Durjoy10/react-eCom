@@ -1,0 +1,75 @@
+/* styles/banner.module.css */
+
+.container {
+    @apply relative w-full;
+  }
+  
+  .swiper {
+    @apply w-full h-[106px] md:h-[345px];
+    --swiper-navigation-size: 40px;
+  --swiper-navigation-top-offset: 50%;
+  --swiper-navigation-sides-offset: 20px;
+  }
+  
+  .slideContainer {
+    @apply relative w-full h-full;
+  }
+  
+  .slideImage {
+    @apply w-full h-full object-cover;
+  }
+  
+  .overlay {
+    @apply absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center;
+  }
+  
+  .content {
+    @apply text-center text-white px-4;
+  }
+  
+  .title {
+    @apply text-lg md:text-3xl font-bold mb-1 md:mb-2;
+  }
+  
+  .subtitle {
+    @apply text-sm md:text-xl mb-2 md:mb-4;
+  }
+  
+  .ctaButton {
+    @apply bg-white text-black px-3 py-1 md:px-6 md:py-2 text-xs md:text-base rounded-full font-medium hover:bg-opacity-90 transition;
+  }
+
+  .navigationContainer {
+    @apply absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 z-10;
+    pointer-events: none; /* Allows clicks to pass through to slides */
+  }
+  .navButton {
+    @apply bg-transparent p-2 rounded-full;
+    pointer-events: auto; /* Re-enable clicks for buttons */
+    transition: all 0.3s ease;
+  }
+  
+  .navButton:hover {
+    @apply bg-black bg-opacity-20;
+  }
+  
+  .navIcon {
+    @apply w-6 h-6 md:w-8 md:h-8;
+    background: linear-gradient(45deg, #3B82F6, #EC4899);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+  }
+  
+  /* Hide buttons on mobile */
+  @media (max-width: 768px) {
+    .navigationContainer {
+      @apply hidden;
+    }
+  }
+  
+  /* Adjust pagination position to account for buttons */
+  .swiper-pagination {
+    @apply bottom-2 md:bottom-4;
+  }  

@@ -4,7 +4,7 @@ import { ProductCard } from '../components/ProductCard';
 import { mockProducts } from '../data/mockProducts';
 import { categories } from '../data/categories';
 
-export const CategoryProducts = () => {
+ const CategoryProducts = () => {
   const { id } = useParams<{ id: string }>();
   
   // Find the category
@@ -56,3 +56,5 @@ export const CategoryProducts = () => {
     </div>
   );
 }; 
+
+export default CategoryProducts;
