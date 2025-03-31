@@ -58,3 +58,10 @@
     height: 400px;
     overflow: hidden;
   }
+
+  @media (max-width: 768px){
+.zoom-image-wrapper {
+  width: 100%;
+    height: 300px;
+}
+  }

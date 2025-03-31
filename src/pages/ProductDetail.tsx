@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { mockProducts } from '../data/mockProducts';
 import ZoomImage from '../components/ZoomImage';
 
 export const ProductDetail = () => {
+  const [selectedImage, setSelectedImage] = useState('');
   const { id } = useParams<{ id: string }>();
   const product = mockProducts.find(p => p.id === id);
+
+
+  useEffect(()=>{
+    if(product){
+      setSelectedImage(product?.image_url);
+    }    
+  },[product])
 
   if (!product) {
     return (
@@ -19,7 +27,7 @@ export const ProductDetail = () => {
 
   return (
     // <div style={{ width: '600px', height: '400px', margin: '20px auto' }}>
-    <div className="m-5">
+    <div className="md:m-5">
      
     <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex md:flex-row flex-col gap-10 container">
@@ -32,40 +40,40 @@ export const ProductDetail = () => {
           />
         </div> */}
 
-        <div className='flex md:flex-row flex-col gap-5'>
-        <div className="nav-for-slider">
-                  <div className="swiper-wrapper justify-center md:gap-3 gap-4 xl:flex-col">
-                    <div className="swiper-slide thumbs-slide lg:!w-[126px] md:!h-[90px] w-full h-[110px]">
-                      <img src="https://pagedone.io/asset/uploads/1713943683.png" alt="Gallery image" className="gallery-image w-full cursor-pointer h-full rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
+        <div className='flex items-center md:items-start md:flex-row flex-col gap-5'>
+        <div className="nav-for-slider order-2 md:order-1">
+                  <div className="flex justify-center md:gap-3 gap-4 xl:flex-col">
+                    <div onClick={()=>setSelectedImage('https://pagedone.io/asset/uploads/1713943683.png')} className="swiper-slide thumbs-slide lg:!w-[126px] md:!h-[90px] !w-[65px] !h-[60px]">
+                      <img src="https://pagedone.io/asset/uploads/1713943683.png" alt="Gallery image" className="gallery-image mx-auto w-full cursor-pointer h-full rounded-md md:rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
                     </div>
-                    <div className="swiper-slide thumbs-slide lg:!w-[126px] md:!h-[90px] w-full h-[110px]">
-                      <img src="https://pagedone.io/asset/uploads/1713943709.png" alt="Gallery image" className="gallery-image w-full cursor-pointer h-full rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
+                    <div onClick={()=>setSelectedImage('https://pagedone.io/asset/uploads/1713943709.png')} className="swiper-slide thumbs-slide lg:!w-[126px] md:!h-[90px] !w-[65px] !h-[60px]">
+                      <img src="https://pagedone.io/asset/uploads/1713943709.png" alt="Gallery image" className="gallery-image mx-auto w-full cursor-pointer h-full rounded-md md:rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
                     </div>
-                    <div className="swiper-slide thumbs-slide lg:!w-[126px] md:!h-[90px] w-full h-[110px]" >
-                      <img src="https://pagedone.io/asset/uploads/1713943720.png" alt="Gallery image" className="gallery-image w-full cursor-pointer h-full rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
+                    <div onClick={()=>setSelectedImage('https://pagedone.io/asset/uploads/1713943720.png')} className="swiper-slide thumbs-slide lg:!w-[126px] md:!h-[90px] !w-[65px] !h-[60px]" >
+                      <img src="https://pagedone.io/asset/uploads/1713943720.png" alt="Gallery image" className="gallery-image mx-auto w-full cursor-pointer h-full rounded-md md:rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
                     </div>
-                    <div className="swiper-slide thumbs-slide lg:!w-[126px] md:!h-[90px] w-full h-[110px]">
-                      <img src="https://pagedone.io/asset/uploads/1713943731.png" alt="Gallery image" className="gallery-image w-full cursor-pointer h-full rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
+                    <div onClick={()=>setSelectedImage('https://pagedone.io/asset/uploads/1713943731.png')} className="swiper-slide thumbs-slide lg:!w-[126px] md:!h-[90px] !w-[65px] !h-[60px]">
+                      <img src="https://pagedone.io/asset/uploads/1713943731.png" alt="Gallery image" className="gallery-image mx-auto w-full cursor-pointer h-full rounded-md md:rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
                     </div>                   
                   </div>
-                </div>
+        </div>
 
         <ZoomImage       
-      src={product.image_url}
+      src={selectedImage}
       alt="Interactive zoom example"
       zoomLevel={3}
-      className="custom-zoom  rounded-lg overflow-hidden "
+      className="custom-zoom  rounded-lg overflow-hidden md:order-2"
       />
       
         </div>
         <div className="w-full md:w-1/2 px-4">
-        <h2 className="text-3xl font-bold mb-2">Premium Wireless Headphones</h2>
-        <p className="text-gray-600 mb-4">SKU: WH1000XM4</p>
-        <div className="mb-4">
-          <span className="text-2xl font-bold mr-2">$349.99</span>
-          <span className="text-gray-500 line-through">$399.99</span>
+        <h2 className="md:text-start text-center text-3xl font-bold mb-2">{product.name}</h2>
+        <p className="md:text-start text-center  text-gray-600 mb-4">SKU: WH1000XM4</p>
+        <div className="mb-4 md:text-start text-center ">
+          <span className="text-2xl font-bold mr-2">${product?.price?.toFixed(2)}</span>
+          <span className="text-gray-500 line-through">${product?.price?.toFixed(2)}</span>
         </div>
-        <div className="flex items-center mb-4">
+        <div className="flex items-center justify-center md:justify-start mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
             className="size-6 text-yellow-500">
             <path fill-rule="evenodd"
@@ -98,7 +106,7 @@ export const ProductDetail = () => {
           </svg>
           <span className="ml-2 text-gray-600">4.5 (120 reviews)</span>
         </div>
-        <p className="text-gray-700 mb-6">Experience premium sound quality and industry-leading noise cancellation
+        <p className="text-gray-700 mb-6 text-justify">Experience premium sound quality and industry-leading noise cancellation
           with
           these wireless headphones. Perfect for music lovers and frequent travelers.</p>
 
@@ -122,7 +130,7 @@ export const ProductDetail = () => {
 
         <div className="flex space-x-4 mb-6">
           <button
-                        className="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        className="bg-indigo-600 flex gap-2 text-nowrap items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor" className="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
