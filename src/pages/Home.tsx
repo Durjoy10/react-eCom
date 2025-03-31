@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { ArrowRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CategoryCard } from '../components/CategoryCard';
+import { Loader } from '../components/Loader';
 import { ProductCard } from '../components/ProductCard';
+import Showcase1 from '../components/Showcase/Showcase1';
 import { categories } from '../data/categories';
 import { mockProducts } from '../data/mockProducts';
-import { ArrowRight } from 'lucide-react';
-import { Loader } from '../components/Loader';
-import Showcase1 from '../components/Showcase/Showcase1';
 
 const ProductSection = ({ title, products, linkText, linkTo }: {
   title: string;
@@ -53,7 +53,7 @@ export const Home = () => {
 
   // Get first 6 categories for display
   const displayedCategories = categories.slice(0, 6);
-  
+
   // Get different product sections
   const featuredProducts = mockProducts.slice(0, 4);
   const popularProducts = [...mockProducts]
@@ -76,7 +76,7 @@ export const Home = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Showcase1 />
-      
+
       {/* Categories Section */}
       <div className="mb-16">
         <div className="flex justify-between items-center mb-8">
@@ -89,7 +89,7 @@ export const Home = () => {
             <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
           {displayedCategories.map((category) => (
             <CategoryCard
               key={category.id}
