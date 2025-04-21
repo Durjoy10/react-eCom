@@ -1,5 +1,5 @@
-import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { CategoryCard } from '../components/CategoryCard';
 import { Loader } from '../components/Loader';
@@ -22,7 +22,7 @@ const ProductSection = ({ title, products, linkText, linkTo }: {
         className="flex items-center text-indigo-600 hover:text-indigo-700 font-medium"
       >
         {linkText}
-        <ArrowRight className="ml-2 h-5 w-5" />
+        <FaArrowRight className="ml-2 h-5 w-5" />
       </Link>
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -86,7 +86,7 @@ export const Home = () => {
             className="flex items-center text-indigo-600 hover:text-indigo-700 font-medium"
           >
             View All Categories
-            <ArrowRight className="ml-2 h-5 w-5" />
+            <FaArrowRight className="ml-2 h-5 w-5" />
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
