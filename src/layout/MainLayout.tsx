@@ -1,7 +1,8 @@
+import { Suspense, useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import { Navbar } from '../components/Navbar'
+import Footer from '../components/Footer'
 import { Loader } from '../components/Loader'
-import { Suspense, useState, useEffect } from 'react'
+import { Navbar } from '../components/Navbar'
 
 const MainLayout = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -23,19 +24,20 @@ const MainLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
-      <Suspense 
+      <Suspense
         fallback={
           <div className="flex justify-center items-center min-h-[calc(100vh-64px)]">
             <Loader size="large" />
           </div>
         }
       >
-        <div className='flex-1'>
-          <Outlet />       
-        </div>             
+        <main className="flex-1">
+          <Outlet />
+        </main>
       </Suspense>
+      <Footer />
     </div>
   )
 }

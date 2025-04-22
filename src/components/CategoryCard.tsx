@@ -6,26 +6,40 @@ interface CategoryCardProps {
   name: string;
   image: string;
   description: string;
+  onClick?: () => void;
 }
 
-export const CategoryCard: React.FC<CategoryCardProps> = ({ id, name, image, description }) => {
-  return (
-    <Link to={`/category/${id}`} className="group">
-      <div className="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <div className="h-48 bg-gray-200">
-          <img
-            src={image}
-            alt={name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
-          <div className="absolute bottom-0 p-4 text-white">
-            <h3 className="text-xl font-semibold mb-1">{name}</h3>
-            <p className="text-sm text-gray-200 opacity-90">{description}</p>
-          </div>
+export const CategoryCard: React.FC<CategoryCardProps> = ({ id, name, image, description, onClick }) => {
+  const cardContent = (
+    <div className="category-card">
+      <div className="category-image-container">
+        <img
+          src={image}
+          alt={name}
+          className="category-image"
+        />
+      </div>
+      <div className="category-overlay">
+        <div className="category-content">
+          <h3 className="category-name">{name}</h3>
+          <p className="category-description">{description}</p>
+
         </div>
       </div>
+    </div>
+  );
+
+  if (onClick) {
+    return (
+      <div onClick={onClick} className="group cursor-pointer">
+        {cardContent}
+      </div>
+    );
+  }
+
+  return (
+    <Link to={`/category/${id}`} className="group">
+      {cardContent}
     </Link>
   );
 }; 

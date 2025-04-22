@@ -1,17 +1,16 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductCard } from '../components/ProductCard';
-import { mockProducts } from '../data/mockProducts';
 import { categories } from '../data/categories';
+import { mockProducts } from '../data/mockProducts';
 
- const CategoryProducts = () => {
+const CategoryProducts = () => {
   const { id } = useParams<{ id: string }>();
-  
+
   // Find the category
   const category = categories.find(cat => cat.id === id);
-  
+
   // Filter products by category name
-  const categoryProducts = mockProducts.filter(product => 
+  const categoryProducts = mockProducts.filter(product =>
     product.category.toLowerCase() === category?.name.toLowerCase()
   );
 
@@ -40,8 +39,10 @@ import { categories } from '../data/categories';
               id={product.id}
               name={product.name}
               price={product.price}
+              sale_price={product.sale_price}
               imageUrl={product.image_url}
               tags={product.tags}
+              rating={product.rating}
             />
           ))}
         </div>
@@ -55,6 +56,6 @@ import { categories } from '../data/categories';
       )}
     </div>
   );
-}; 
+};
 
 export default CategoryProducts;

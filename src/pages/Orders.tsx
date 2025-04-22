@@ -16,12 +16,13 @@ const Orders = () => {
     };
 
     const getStatusIcon = (status: string) => {
-        switch (status) {
-            case 'Processing':
+        switch (status.toLowerCase()) {
+            case 'processing':
+            case 'confirmed':
                 return <FaSpinner className="text-yellow-500" />;
-            case 'Shipped':
+            case 'shipped':
                 return <FaShippingFast className="text-blue-500" />;
-            case 'Delivered':
+            case 'delivered':
                 return <FaBoxOpen className="text-green-500" />;
             default:
                 return <FaSpinner className="text-gray-500" />;
@@ -29,12 +30,13 @@ const Orders = () => {
     };
 
     const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'Processing':
+        switch (status.toLowerCase()) {
+            case 'processing':
+            case 'confirmed':
                 return 'bg-yellow-100 text-yellow-800';
-            case 'Shipped':
+            case 'shipped':
                 return 'bg-blue-100 text-blue-800';
-            case 'Delivered':
+            case 'delivered':
                 return 'bg-green-100 text-green-800';
             default:
                 return 'bg-gray-100 text-gray-800';
@@ -52,7 +54,7 @@ const Orders = () => {
         }).format(date);
     };
 
-    if (orders.length === 0) {
+    if (!orders || orders.length === 0) {
         return (
             <div className="container mx-auto px-4 py-16">
                 <div className="max-w-4xl mx-auto">
@@ -97,7 +99,7 @@ const Orders = () => {
                                     <div className="flex items-center justify-between sm:justify-end gap-4">
                                         <div className="text-right">
                                             <div className="text-gray-600 text-sm">Total Amount</div>
-                                            <div className="font-bold text-lg">${order.total.toFixed(2)}</div>
+                                            <div className="font-bold text-lg">৳ {order.total.toFixed(2)}</div>
                                         </div>
                                         <div>
                                             {expandedOrderId === order.id ? (
@@ -120,33 +122,33 @@ const Orders = () => {
                                         <div className="flex flex-col md:flex-row gap-4 md:gap-0">
                                             <div className="flex-1 relative">
                                                 <div className="flex items-center mb-2">
-                                                    <div className={`relative z-10 flex items-center justify-center h-8 w-8 rounded-full border-2 ${order.status === 'Processing' || order.status === 'Shipped' || order.status === 'Delivered' ? 'border-green-500 bg-green-100' : 'border-gray-300 bg-white'}`}>
-                                                        <FaSpinner className={order.status === 'Processing' || order.status === 'Shipped' || order.status === 'Delivered' ? 'text-green-500' : 'text-gray-300'} />
+                                                    <div className={`relative z-10 flex items-center justify-center h-8 w-8 rounded-full border-2 ${order.status.toLowerCase() === 'processing' || order.status.toLowerCase() === 'confirmed' || order.status.toLowerCase() === 'shipped' || order.status.toLowerCase() === 'delivered' ? 'border-green-500 bg-green-100' : 'border-gray-300 bg-white'}`}>
+                                                        <FaSpinner className={order.status.toLowerCase() === 'processing' || order.status.toLowerCase() === 'confirmed' || order.status.toLowerCase() === 'shipped' || order.status.toLowerCase() === 'delivered' ? 'text-green-500' : 'text-gray-300'} />
                                                     </div>
-                                                    <div className={`h-1 flex-1 ${order.status === 'Shipped' || order.status === 'Delivered' ? 'bg-green-500' : 'bg-gray-200'}`}></div>
+                                                    <div className={`h-1 flex-1 ${order.status.toLowerCase() === 'shipped' || order.status.toLowerCase() === 'delivered' ? 'bg-green-500' : 'bg-gray-200'}`}></div>
                                                 </div>
                                                 <span className="text-xs font-medium">Processing</span>
                                             </div>
                                             <div className="flex-1 relative">
                                                 <div className="flex items-center mb-2">
-                                                    <div className={`relative z-10 flex items-center justify-center h-8 w-8 rounded-full border-2 ${order.status === 'Shipped' || order.status === 'Delivered' ? 'border-green-500 bg-green-100' : 'border-gray-300 bg-white'}`}>
-                                                        <FaShippingFast className={order.status === 'Shipped' || order.status === 'Delivered' ? 'text-green-500' : 'text-gray-300'} />
+                                                    <div className={`relative z-10 flex items-center justify-center h-8 w-8 rounded-full border-2 ${order.status.toLowerCase() === 'shipped' || order.status.toLowerCase() === 'delivered' ? 'border-green-500 bg-green-100' : 'border-gray-300 bg-white'}`}>
+                                                        <FaShippingFast className={order.status.toLowerCase() === 'shipped' || order.status.toLowerCase() === 'delivered' ? 'text-green-500' : 'text-gray-300'} />
                                                     </div>
-                                                    <div className={`h-1 flex-1 ${order.status === 'Delivered' ? 'bg-green-500' : 'bg-gray-200'}`}></div>
+                                                    <div className={`h-1 flex-1 ${order.status.toLowerCase() === 'delivered' ? 'bg-green-500' : 'bg-gray-200'}`}></div>
                                                 </div>
                                                 <span className="text-xs font-medium">Shipped</span>
                                             </div>
                                             <div className="flex-1 relative">
                                                 <div className="flex items-center mb-2">
-                                                    <div className={`relative z-10 flex items-center justify-center h-8 w-8 rounded-full border-2 ${order.status === 'Delivered' ? 'border-green-500 bg-green-100' : 'border-gray-300 bg-white'}`}>
-                                                        <FaBoxOpen className={order.status === 'Delivered' ? 'text-green-500' : 'text-gray-300'} />
+                                                    <div className={`relative z-10 flex items-center justify-center h-8 w-8 rounded-full border-2 ${order.status.toLowerCase() === 'delivered' ? 'border-green-500 bg-green-100' : 'border-gray-300 bg-white'}`}>
+                                                        <FaBoxOpen className={order.status.toLowerCase() === 'delivered' ? 'text-green-500' : 'text-gray-300'} />
                                                     </div>
                                                 </div>
                                                 <span className="text-xs font-medium">Delivered</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <h3 className="font-medium mb-4">Order Items ({order.products.length})</h3>
+                                    <h3 className="font-medium mb-4">Order Items ({order.items ? order.items.length : 0})</h3>
                                     <div className="overflow-x-auto">
                                         <table className="min-w-full divide-y divide-gray-200">
                                             <thead className="bg-gray-100">
@@ -166,7 +168,7 @@ const Orders = () => {
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-gray-200">
-                                                {order.products.map((product, index) => (
+                                                {order.items && order.items.map((product, index) => (
                                                     <tr key={`${product.id}-${index}`}>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <div className="flex items-center">
@@ -179,13 +181,13 @@ const Orders = () => {
                                                             </div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                            ${product.price.toFixed(2)}
+                                                            ৳ {product.price.toFixed(2)}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                             {product.quantity || 1}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                            ${((product.quantity || 1) * product.price).toFixed(2)}
+                                                            ৳ {((product.quantity || 1) * product.price).toFixed(2)}
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -201,7 +203,7 @@ const Orders = () => {
                                         </Link>
                                         <div className="text-right">
                                             <div className="text-sm text-gray-600 mb-1">Order Total</div>
-                                            <div className="text-lg font-bold">${order.total.toFixed(2)}</div>
+                                            <div className="text-lg font-bold">৳ {order.total.toFixed(2)}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -214,4 +216,4 @@ const Orders = () => {
     );
 };
 
-export default Orders; 
+export default Orders;

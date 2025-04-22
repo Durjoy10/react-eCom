@@ -78,21 +78,21 @@ export const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-primary">ShopEase</span>
+            <span className="text-2xl font-display font-bold text-primary">ShopEase</span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/products" className="text-gray-600 hover:text-primary transition-colors">
+            <Link to="/products" className="text-gray-600 hover:text-primary transition-colors font-medium">
               Products
             </Link>
             {/* <Link to="/track-order" className="text-gray-600 hover:text-primary transition-colors">
               Track Order
             </Link> */}
-            <Link to="/wishlist" className="text-gray-600 hover:text-primary transition-colors">
+            <Link to="/wishlist" className="text-gray-600 hover:text-primary transition-colors font-medium">
               Wishlist
             </Link>
-            <Link to="/profile/orders" className="text-gray-600 hover:text-primary transition-colors">
+            <Link to="/profile/orders" className="text-gray-600 hover:text-primary transition-colors font-medium">
               Orders
             </Link>
           </div>
@@ -189,7 +189,7 @@ export const Navbar = () => {
                 </Link>
               </div>
             )}
-            <Link to="/checkout" className="relative text-gray-600 hover:text-primary transition-colors">
+            <Link to="/cart" className="relative text-gray-600 hover:text-primary transition-colors">
               <FaShoppingCart className="h-5 w-5" />
               {cart.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -201,7 +201,7 @@ export const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-4">
-            <Link to="/checkout" className="relative text-gray-600">
+            <Link to="/cart" className="relative text-gray-600">
               <FaShoppingCart className="h-5 w-5" />
               {cart.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -221,6 +221,16 @@ export const Navbar = () => {
 
       {/* Mobile Menu */}
       <div className={`md:hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex justify-between items-center p-4 border-b border-gray-200">
+          <h2 className="text-xl font-display font-bold text-gray-900">Menu</h2>
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="p-2 rounded-full hover:bg-gray-100 text-gray-600"
+            aria-label="Close menu"
+          >
+            <FaTimes className="h-6 w-6" />
+          </button>
+        </div>
         <div className="px-4 pt-2 pb-3 space-y-1">
           <div className="mb-4">
             <form onSubmit={handleSearch} className="w-full relative">

@@ -6,6 +6,16 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Plus Jakarta Sans', 'Poppins', 'system-ui', 'sans-serif'],
+        display: ['Playfair Display', 'serif'],
+      },
+      fontSize: {
+        '2xs': '0.65rem',
+        'display-sm': ['2rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+        'display': ['2.5rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+        'display-lg': ['3.5rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+      },
       colors: {
         primary: {
           DEFAULT: '#4f46e5',

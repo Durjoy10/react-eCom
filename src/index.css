@@ -26,7 +26,51 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Typography system */
+  h1,
+  .h1 {
+    @apply font-display font-bold text-3xl md:text-4xl lg:text-display-lg tracking-tight;
+  }
+
+  h2,
+  .h2 {
+    @apply font-display font-bold text-2xl md:text-3xl lg:text-display-sm tracking-tight;
+  }
+
+  h3,
+  .h3 {
+    @apply font-display font-semibold text-xl md:text-2xl tracking-tight;
+  }
+
+  h4,
+  .h4 {
+    @apply font-sans font-semibold text-lg md:text-xl;
+  }
+
+  h5,
+  .h5 {
+    @apply font-sans font-semibold text-base md:text-lg;
+  }
+
+  p,
+  .p {
+    @apply font-sans text-base leading-relaxed;
+  }
+
+  .lead {
+    @apply text-lg md:text-xl font-normal leading-relaxed;
+  }
+
+  .small {
+    @apply text-sm font-medium;
+  }
+
+  .tiny {
+    @apply text-xs md:text-2xs font-medium;
   }
 
   /* Smooth page transitions */
@@ -63,6 +107,64 @@
     @apply border hover:bg-accent hover:text-white hover:shadow-lg hover:-translate-y-0.5;
   }
 
+  /* Category Components */
+  .category-section {
+    @apply py-8 mb-12;
+  }
+
+  .category-header {
+    @apply flex justify-between items-center mb-6;
+  }
+
+  .category-title {
+    @apply font-display text-base md:text-3xl font-bold text-gray-900;
+  }
+
+
+  .category-link {
+    @apply flex items-center text-indigo-600 hover:text-indigo-700 font-medium;
+  }
+
+  .category-arrow {
+    @apply ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform;
+  }
+
+  .category-grid {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4;
+  }
+
+  .category-card {
+    @apply relative overflow-hidden rounded-xl shadow-sm hover:shadow-md transition-all duration-300;
+  }
+
+  .category-image-container {
+    @apply aspect-square md:aspect-auto md:h-48 bg-gray-200;
+  }
+
+  .category-image {
+    @apply w-full h-full object-cover group-hover:scale-105 transition-transform duration-500;
+  }
+
+  .category-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent;
+  }
+
+  .category-content {
+    @apply absolute bottom-0 left-0 right-0 p-3 md:p-4 flex flex-col items-center text-white text-center;
+  }
+
+  .category-name {
+    @apply text-lg md:text-xl font-display font-semibold mb-1 md:mb-2;
+  }
+
+  .category-description {
+    @apply text-xs md:text-sm text-gray-200 opacity-90 mb-3 line-clamp-2;
+  }
+
+  .category-button {
+    @apply bg-white text-gray-900 text-xs md:text-sm font-medium py-1.5 px-4 rounded-full hover:bg-gray-100 transition-colors;
+  }
+
   /* Form Components */
   .form-group {
     @apply relative mb-4;
@@ -91,7 +193,7 @@
   }
 
   .heading {
-    @apply text-3xl font-bold text-gray-900 mb-8;
+    @apply font-display text-3xl font-bold text-gray-900 mb-8;
   }
 
   .text {
@@ -118,6 +220,25 @@
 
   .responsive-grid {
     @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
+  }
+
+  /* Mobile Product Card Optimizations */
+  @media (max-width: 640px) {
+    .product-discount-badge {
+      @apply text-2xs px-1 py-0.5;
+    }
+
+    .product-price {
+      @apply text-sm font-bold;
+    }
+
+    .product-original-price {
+      @apply text-2xs;
+    }
+
+    .product-buy-button {
+      @apply py-1 text-xs;
+    }
   }
 
   /* Mobile Menu */

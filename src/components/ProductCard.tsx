@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
-import { FaEye, FaHeart, FaShoppingCart } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaHeart, FaShoppingCart, FaStar } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/store';
 import { useWishlistStore } from '../store/wishlistStore';
 import { Loader } from './Loader';
@@ -11,17 +11,33 @@ interface ProductCardProps {
   price: number;
   imageUrl: string;
   tags: string[];
+  rating?: number;
+  sale_price?: number;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = memo(({ id, name, price, imageUrl, tags }) => {
+export const ProductCard: React.FC<ProductCardProps> = memo(({
+  id,
+  name,
+  price,
+  imageUrl,
+  tags,
+  rating = 5,
+  sale_price
+}) => {
   const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
   const { addToCart } = useStore();
+  const navigate = useNavigate();
   const isWishlisted = isInWishlist(id);
   const [imageLoading, setImageLoading] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
+  const hasDiscount = sale_price !== undefined && sale_price < price;
+  const discountPercentage = hasDiscount ? Math.round((1 - sale_price / price) * 100) : 0;
+  const displayPrice = hasDiscount ? sale_price : price;
+
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (isWishlisted) {
       removeFromWishlist(id);
     } else {
@@ -31,70 +47,123 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ id, name, price, 
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
-    addToCart({ id, name, price, image: imageUrl });
+    e.stopPropagation();
+    addToCart({ id, name, price: displayPrice, image: imageUrl });
+  };
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart({ id, name, price: displayPrice, image: imageUrl });
+    navigate('/checkout');
   };
 
   return (
-    <Link to={`/product/${id}`} className="product-card group">
-      <div className="relative overflow-hidden">
-        {imageLoading && (
-          <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-            <Loader size="small" />
+    <div
+      className="rounded-xl bg-white shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 h-full flex flex-col"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Product ID at top right */}
+      <div className="relative">
+        <div className="absolute top-2 right-2 text-xs text-gray-500 bg-white/80 px-1.5 py-0.5 rounded-md z-10">
+          id: {id}
+        </div>
+
+        {/* Sale Tag */}
+        {hasDiscount && (
+          <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-md z-10">
+            SALE
           </div>
         )}
-        <img
-          src={imageUrl}
-          alt={name}
-          className={`product-image ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
-          onLoad={() => setImageLoading(false)}
-          loading="lazy"
-        />
 
-        {/* Quick Actions */}
-        <div
-          className={`absolute inset-0 bg-black/20 flex items-center justify-center gap-4 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'
-            }`}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <button
-            onClick={handleAddToCart}
-            className="bg-white p-3 rounded-full shadow-lg transform hover:scale-110 transition-transform duration-200"
-            title="Add to Cart"
-          >
-            <FaShoppingCart className="text-gray-700" />
-          </button>
-          <button
-            onClick={handleWishlistClick}
-            className="bg-white p-3 rounded-full shadow-lg transform hover:scale-110 transition-transform duration-200"
-            title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
-          >
-            <FaHeart className={isWishlisted ? 'text-red-500' : 'text-gray-700'} />
-          </button>
-          <Link
-            to={`/product/${id}`}
-            className="bg-white p-3 rounded-full shadow-lg transform hover:scale-110 transition-transform duration-200"
-            title="View Details"
-          >
-            <FaEye className="text-gray-700" />
+        {/* Image Container */}
+        <div className="relative overflow-hidden" style={{ aspectRatio: '1/1' }}>
+          {imageLoading && (
+            <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
+              <Loader size="small" />
+            </div>
+          )}
+          <Link to={`/product/${id}`}>
+            <img
+              src={imageUrl}
+              alt={name}
+              className={`w-full h-full object-cover transition-transform duration-300 hover:scale-105 ${imageLoading ? 'opacity-0' : 'opacity-100'
+                }`}
+              onLoad={() => setImageLoading(false)}
+              loading="lazy"
+            />
           </Link>
+
+          {/* Action Buttons - Only visible on hover */}
+          <div
+            className={`absolute right-3 top-10 flex flex-col gap-2 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'
+              }`}
+          >
+            <button
+              onClick={handleWishlistClick}
+              className="bg-white w-9 h-9 rounded-full shadow-md flex items-center justify-center hover:bg-gray-100 transition-colors"
+              aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+            >
+              <FaHeart className={isWishlisted ? 'text-red-500' : 'text-gray-400'} size={18} />
+            </button>
+            <button
+              onClick={handleAddToCart}
+              className="bg-white w-9 h-9 rounded-full shadow-md flex items-center justify-center hover:bg-gray-100 transition-colors"
+              aria-label="Add to cart"
+            >
+              <FaShoppingCart className="text-gray-700" size={18} />
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">{name}</h3>
-        <p className="text-xl font-bold text-primary mb-3">${price.toFixed(2)}</p>
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full"
-            >
-              {tag}
-            </span>
-          ))}
+      {/* Product Details */}
+      <div className="p-2 md:p-3 flex-grow flex flex-col">
+        {/* Product Name */}
+        <Link to={`/product/${id}`} className="flex-grow">
+          <h3 className="font-sans font-semibold text-gray-800 mb-1 line-clamp-2 hover:text-blue-600 transition-colors text-sm md:text-base">
+            {name}
+          </h3>
+        </Link>
+
+        {/* Ratings */}
+        <div className="flex items-center mb-2">
+          <div className="flex">
+            {[...Array(5)].map((_, i) => (
+              <FaStar key={i} className={i < Math.round(rating) ? 'text-yellow-400' : 'text-gray-300'} size={12} />
+            ))}
+          </div>
+          <span className="text-gray-500 ml-1 md:ml-2 text-xs">{Math.floor(Math.random() * 100) + 1}</span>
         </div>
+
+        {/* Price */}
+        <div className="flex flex-wrap items-center gap-1 md:gap-2 mb-3">
+          {hasDiscount && (
+            <>
+              <div className="flex items-center flex-wrap">
+                <span className="product-original-price text-gray-500 line-through text-xs md:text-sm mr-1 md:mr-2">${price.toFixed(2)}</span>
+                <span className="product-discount-badge bg-blue-100 text-blue-700 text-xs font-medium px-1.5 py-0.5 rounded">
+                  -{discountPercentage}%
+                </span>
+              </div>
+              <div className="w-full mt-1"></div>
+            </>
+          )}
+          <span className="product-price text-base md:text-lg font-bold text-gray-900">${displayPrice.toFixed(2)}</span>
+        </div>
+
+        {/* Add to Cart Button */}
+        <button
+          onClick={handleBuyNow}
+          className="product-buy-button w-full bg-blue-600 hover:bg-blue-700 text-white py-1.5 md:py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+        >
+          <FaShoppingCart size={14} />
+          <span className="text-xs md:text-sm">Buy Now</span>
+        </button>
       </div>
-    </Link>
+    </div>
   );
 });
+
+export default ProductCard;
